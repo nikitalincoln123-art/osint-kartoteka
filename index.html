@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSINT Картотека — рабочая среда для анализа открытых источников</title>
+<meta name="description" content="Локальная рабочая среда для OSINT: картотека объектов, роли, связи, доска-граф и хронология. Данные не покидают ваш браузер.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><div class="logo">OSI</div>OSINT Картотека</a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Главная</a>
+      <a href="pages/features.html">Возможности</a>
+      <a href="pages/guide.html">Руководство</a>
+      <a href="pages/privacy.html">Приватность</a>
+    </nav>
+    <a class="btn small nav-cta" href="app/index.html">Открыть программу</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="tags">
+        <span class="tag">OSINT</span><span class="tag">Локально</span><span class="tag">Без регистрации</span><span class="tag">Офлайн</span>
+      </div>
+      <h1>Рабочая среда <span class="grad">open-source<br>аналитики</span></h1>
+      <p class="lede">Собирайте объекты, роли и связи из открытых источников в одной картотеке. Стройте доску-граф расследования, ведите хронологию событий — всё хранится в вашем браузере, без серверов и аккаунтов.</p>
+      <a class="btn" href="app/index.html">Запустить программу →</a>
+      <a class="btn ghost" href="pages/features.html" style="margin-left:10px">Обзор возможностей</a>
+      <div class="stat-line">
+        <div class="stat"><b>4</b><span>типа объектов</span></div>
+        <div class="stat"><b>8+</b><span>типов связей</span></div>
+        <div class="stat"><b>100%</b><span>локальных данных</span></div>
+      </div>
+    </div>
+
+    <div class="mockup" aria-hidden="true">
+      <div class="m-bar">
+        <span class="m-mode sel">Список</span>
+        <span class="m-mode">Доска</span>
+        <span class="m-mode">Хронология</span>
+      </div>
+      <div class="m-body">
+        <div class="m-side">
+          <div class="m-item hl"><div class="m-av" style="background:#38bdf8">ИК</div><span>Иван Ковалёв</span></div>
+          <div class="m-item"><div class="m-av" style="background:#818cf8">🏛</div><span>ООО Северный Логистик</span></div>
+          <div class="m-item"><div class="m-av" style="background:#22d3ee">🌐</div><span>severniy-log.example</span></div>
+        </div>
+        <div class="m-main">
+          <div class="m-edge" style="left:20%;top:30%;width:46%;transform:rotate(20deg);transform-origin:0 0"></div>
+          <div class="m-edge" style="left:20%;top:62%;width:44%;transform:rotate(-24deg);transform-origin:0 0"></div>
+          <div class="m-mid" style="left:52%;top:38%">member</div>
+          <div class="m-mid" style="left:48%;top:70%">owns</div>
+          <div class="m-node" style="left:6%;top:16%"><div class="m-av" style="background:#38bdf8">ИК</div>Иван<br>Ковалёв</div>
+          <div class="m-node" style="left:50%;top:24%"><div class="m-av" style="background:#818cf8">🏛</div>ООО «Северный<br>Логистик»</div>
+          <div class="m-node" style="left:42%;top:74%"><div class="m-av" style="background:#22d3ee">🌐</div>домен</div>
+        </div>
+      </div>
+      <div class="m-logo">Картотека OSINT · локальная рабочая среда</div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Возможности</div>
+      <h2>Всё необходимое для ведения расследования</h2>
+      <p>От картотеки объектов до визуального анализа связей — в одном месте, без интернета.</p>
+    </div>
+    <div class="grid3">
+      <div class="feature">
+        <div class="ic">📇</div>
+        <h3>Картотека объектов</h3>
+        <p>Люди, организации, домены и инфраструктура в единой базе с расширенными полями.</p>
+        <ul><li>псевдонимы и даты</li><li>контакты и геолокация</li><li>счета и источники</li></ul>
+      </div>
+      <div class="feature">
+        <div class="ic">🔗</div>
+        <h3>Роли и связи</h3>
+        <p>Соединяйте объекты отношениями: владеет, участник, администратор, контакты и другие.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">🕸</div>
+        <h3>Доска-граф</h3>
+        <p>Перетаскивайте узлы, соединяйте линии руками, авто-раскладка и масштабирование.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">🕒</div>
+        <h3>Хронология</h3>
+        <p>Единая ось времени: даты, заметки и события, привязанные к фигурантам.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">📄</div>
+        <h3>Экспорт и импорт</h3>
+        <p>Выгрузка в JSON и CSV, импорт обратно, печать отчёта. Данные всегда у вас.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">🖼</div>
+        <h3>Фото и заметки</h3>
+        <p>Фото по ссылке или из файла, заметки по каждому объекту в своей хронологии.</p>
+      </div>
+    </div>
+    <div class="cta" style="padding:34px 0 10px"><a class="btn" href="pages/features.html">Подробнее о возможностях</a></div>
+  </div>
+</section>
+
+<section style="background:var(--panel2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Как работает</div>
+      <h2>Три шага до рабочей картины</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <h3>Занесите объекты</h3>
+        <p>Создайте карточки фигурантов: люди, организации, домены. Заполните псевдонимы, контакты, источники.</p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <h3>Соедините связи</h3>
+        <p>Свяжите объекты ролями на доске или через форму. Каждая связь документируется комментарием.</p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <h3>Анализируйте</h3>
+        <p>Смотрите на граф, прослеживайте хронологию, выгружайте результаты. Есть демо-данные для старта.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="privacy">
+      <div>
+        <div class="kicker">Приватность</div>
+        <h2>Данные не покидают ваш браузер</h2>
+        <p>Это полностью локальный инструмент: нет сервера, аккаунта и учёта активности. Всё живёт в localStorage вашего браузера, экспорт остаётся в ваших файлах.</p>
+        <p style="margin-top:10px"><a class="btn ghost small" href="pages/privacy.html">Подробнее о приватности</a></p>
+      </div>
+      <div class="lockline">🔒 данные → localStorage браузера<br>🔒 без трекеров и бэкенда<br>🔒 автономная работа офлайн</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Начните сбор сейчас</h2>
+    <p>Программа открывается сразу в браузере — ничего устанавливать не нужно. Демо-данные помогут освоиться.</p>
+    <a class="btn" href="app/index.html">Запустить OSINT Картотеку</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>OSINT Картотека · локальная рабочая среда для анализа открытых источников</span>
+    <span><a href="pages/privacy.html">Приватность</a> · <a href="pages/guide.html">Руководство</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
