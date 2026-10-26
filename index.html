@@ -33,9 +33,9 @@
       <a class="btn" href="app/index.html">Запустить программу →</a>
       <a class="btn ghost" href="pages/features.html" style="margin-left:10px">Обзор возможностей</a>
       <div class="stat-line">
-        <div class="stat"><b>4</b><span>типа объектов</span></div>
-        <div class="stat"><b>8+</b><span>типов связей</span></div>
-        <div class="stat"><b>100%</b><span>локальных данных</span></div>
+        <div class="stat"><b data-count="4" data-suffix=""></b><span>типа объектов</span></div>
+        <div class="stat"><b data-count="8" data-suffix="+"></b><span>типов связей</span></div>
+        <div class="stat"><b data-count="100" data-suffix="%"></b><span>локальных данных</span></div>
       </div>
     </div>
 
@@ -47,18 +47,18 @@
       </div>
       <div class="m-body">
         <div class="m-side">
-          <div class="m-item hl"><div class="m-av" style="background:#38bdf8">ИК</div><span>Иван Ковалёв</span></div>
-          <div class="m-item"><div class="m-av" style="background:#818cf8">🏛</div><span>ООО Северный Логистик</span></div>
-          <div class="m-item"><div class="m-av" style="background:#22d3ee">🌐</div><span>severniy-log.example</span></div>
+          <div class="m-item hl"><div class="m-av" style="background:#d9dce1">ИК</div><span>Иван Ковалёв</span></div>
+          <div class="m-item"><div class="m-av" style="background:#a7adb6">ОР</div><span>ООО Северный Логистик</span></div>
+          <div class="m-item"><div class="m-av" style="background:#c3c9d0">ДО</div><span>severniy-log.example</span></div>
         </div>
         <div class="m-main">
           <div class="m-edge" style="left:20%;top:30%;width:46%;transform:rotate(20deg);transform-origin:0 0"></div>
           <div class="m-edge" style="left:20%;top:62%;width:44%;transform:rotate(-24deg);transform-origin:0 0"></div>
           <div class="m-mid" style="left:52%;top:38%">member</div>
           <div class="m-mid" style="left:48%;top:70%">owns</div>
-          <div class="m-node" style="left:6%;top:16%"><div class="m-av" style="background:#38bdf8">ИК</div>Иван<br>Ковалёв</div>
-          <div class="m-node" style="left:50%;top:24%"><div class="m-av" style="background:#818cf8">🏛</div>ООО «Северный<br>Логистик»</div>
-          <div class="m-node" style="left:42%;top:74%"><div class="m-av" style="background:#22d3ee">🌐</div>домен</div>
+          <div class="m-node" style="left:6%;top:16%"><div class="m-av" style="background:#d9dce1">ИК</div>Иван<br>Ковалёв</div>
+          <div class="m-node" style="left:50%;top:24%"><div class="m-av" style="background:#a7adb6">ОР</div>ООО «Северный<br>Логистик»</div>
+          <div class="m-node" style="left:42%;top:74%"><div class="m-av" style="background:#c3c9d0">ДО</div>домен</div>
         </div>
       </div>
       <div class="m-logo">Картотека OSINT · локальная рабочая среда</div>
@@ -164,6 +164,37 @@
     <span><a href="pages/privacy.html">Приватность</a> · <a href="pages/guide.html">Руководство</a></span>
   </div>
 </footer>
+
+<script>
+// Анимированный счётчик цифр в статистике
+(function(){
+  function animate(element){
+    var target=parseInt(element.getAttribute("data-count"),10);
+    var suffix=element.getAttribute("data-suffix")||"";
+    var dur=900,start=null;
+    function step(ts){
+      if(!start)start=ts;
+      var p=Math.min((ts-start)/dur,1);
+      p=1-Math.pow(1-p,3);
+      element.textContent=Math.round(target*p)+suffix;
+      if(p<1)requestAnimationFrame(step);
+      else element.textContent=target+suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters=document.querySelectorAll(".stat b[data-count]");
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){animate(en.target);io.unobserve(en.target);}
+      });
+    },{threshold:0.4});
+    counters.forEach(function(c){io.observe(c);});
+  }else{
+    counters.forEach(function(c){animate(c);});
+  }
+})();
+</script>
 
 </body>
 </html>
