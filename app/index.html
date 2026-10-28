@@ -14,6 +14,7 @@
   --glow:0 0 0 1px rgba(201,204,210,.35),0 6px 22px rgba(255,255,255,.07);
   --radius:10px;
 }
+.edit-only{display:none !important}
 *{box-sizing:border-box}
 img{max-width:100%}
 html,body{margin:0;padding:0;overflow-x:hidden}
@@ -196,7 +197,7 @@ label{display:block;font-size:12px;color:var(--muted);margin:9px 0 4px}
     <div class="panel">
       <div class="row" style="margin-bottom:12px">
         <h2 style="margin:0;flex:1">Объекты</h2>
-        <button class="primary small" id="btnNewEntity">+ Новый</button>
+        <button class="primary small edit-only" id="btnNewEntity">+ Новый</button>
       </div>
       <div class="filter-bar">
         <div class="searchbox">
@@ -253,8 +254,8 @@ label{display:block;font-size:12px;color:var(--muted);margin:9px 0 4px}
             <div id="tab-info">
               <div id="detailFields"></div>
               <div class="actions">
-                <button class="small" id="btnEditEntity">Редактировать</button>
-                <button class="small" id="btnAddNote">+ Заметка</button>
+                <button class="small edit-only" id="btnEditEntity">Редактировать</button>
+                <button class="small edit-only" id="btnAddNote">+ Заметка</button>
                 <button class="small danger" id="btnDeleteEntity">Удалить</button>
               </div>
             </div>
@@ -281,7 +282,7 @@ label{display:block;font-size:12px;color:var(--muted);margin:9px 0 4px}
         <h2 style="margin-bottom:4px">Все объекты картотеки</h2>
         <div class="muted" style="margin-bottom:12px;font-size:12px">Кликните по объекту в списке слева или здесь, чтобы открыть карточку.</div>
         <div id="allCards"></div>
-        <div class="empty" id="listEmpty">Пока нет объектов. <br><br><button class="primary" id="btnNewEntity2">Создать первый объект</button></div>
+        <div class="empty" id="listEmpty">Пока нет объектов. <br><br><button class="primary edit-only" id="btnNewEntity2">Создать первый объект</button></div>
       </div>
     </div>
 
@@ -435,6 +436,12 @@ label{display:block;font-size:12px;color:var(--muted);margin:9px 0 4px}
 "use strict";
 // ============ Хранилище ============
 const STORE_KEY="osint_kartoteka_v1";
+// Режим ограниченной работы: добавление/редактирование объектов, заметки и фото отключены
+const ENABLE_EDIT=false;
+function blockedEdit(){
+  toast("Редактирование временно недоступно");
+  return true;
+}
 let DB={entities:[],links:[],timeline:[],positions:{}};
 let selectedId=null;
 let activeFilter="all";
@@ -543,7 +550,7 @@ function openDetail(id){
   // фото
   const ph=document.getElementById("detailPhoto");
   if(e.photo){ph.innerHTML='<img src="'+esc(e.photo)+'" alt="">';}
-  else{ph.innerHTML='<div class="ph-placeholder" id="phClick">Загрузить фото</div>';ph.querySelector("#phClick").onclick=()=>{document.getElementById("fotoFileInput").click();};}
+  else{ph.innerHTML='<div class="ph-placeholder" id="phClick">Загрузить фото</div>';ph.querySelector("#phClick").onclick=()=>{if(!ENABLE_EDIT){blockedEdit();return;}document.getElementById("fotoFileInput").click();};}
 
   // поля
   let f="";
@@ -609,7 +616,7 @@ function renderNotes(id){
   const e=ent(id);
   const box=document.getElementById("notesList");
   box.innerHTML=(e.notes||[]).map((n,i)=>{
-    return '<div class="note-box"><div class="row" style="justify-content:space-between"><b style="font-size:12px;color:var(--accent)">'+esc(n.date)+'</b><button class="small danger" data-idx="'+i+'">✕</button></div>'+esc(n.text)+'</div>';
+    return '<div class="note-box"><div class="row" style="justify-content:space-between"><b style="font-size:12px;color:#c9ccd2">'+esc(n.date)+'</b>'+(ENABLE_EDIT?'<button class="small danger" data-idx="'+i+'">✕</button>':'')+'</div>'+esc(n.text)+'</div>';
   }).join("")||'<div class="muted empty" style="padding:10px">Заметок нет</div>';
   box.querySelectorAll("[data-idx]").forEach(b=>b.onclick=()=>{e.notes.splice(+b.dataset.idx,1);save();render();openDetail(id);});
   document.getElementById("notesCard").style.display=(e.notes&&e.notes.length)?"block":"none";
@@ -936,8 +943,8 @@ function showList(){selectedId=null;document.getElementById("hCur").value="";
 function openModal(id){document.getElementById(id).classList.add("show");}
 function closeModal(id){document.getElementById(id).classList.remove("show");}
 
-document.getElementById("btnNewEntity").onclick=()=>{editEntity(null);};
-document.getElementById("btnNewEntity2").onclick=()=>{editEntity(null);};
+document.getElementById("btnNewEntity").onclick=()=>{if(!ENABLE_EDIT&&blockedEdit())return;editEntity(null);};
+document.getElementById("btnNewEntity2").onclick=()=>{if(!ENABLE_EDIT&&blockedEdit())return;editEntity(null);};
 document.getElementById("btnModalCancel").onclick=()=>closeModal("entityModal");
 document.getElementById("btnLinkCancel").onclick=()=>closeModal("linkModal");
 document.getElementById("btnNoteCancel").onclick=()=>closeModal("noteModal");
@@ -980,7 +987,7 @@ document.getElementById("btnModalSave").onclick=()=>{
   save();render();closeModal("entityModal");openDetail(id?id:data.id);
 };
 
-document.getElementById("btnEditEntity").onclick=()=>{editEntity(ent(selectedId));};
+document.getElementById("btnEditEntity").onclick=()=>{if(!ENABLE_EDIT&&blockedEdit())return;editEntity(ent(selectedId));};
 document.getElementById("btnDeleteEntity").onclick=()=>{
   const e=ent(selectedId);if(!e)return;
   if(!confirm('Удалить объект "'+e.name+'" и его связи?'))return;
@@ -991,8 +998,9 @@ document.getElementById("btnDeleteEntity").onclick=()=>{
 document.getElementById("btnBack").onclick=showList;
 
 // ============ Фото ============
-document.getElementById("btnFotoFile").onclick=()=>document.getElementById("fotoFileInput").click();
+document.getElementById("btnFotoFile").onclick=()=>{if(!ENABLE_EDIT&&blockedEdit())return;document.getElementById("fotoFileInput").click();};
 document.getElementById("fotoFileInput").onchange=e=>{
+  if(!ENABLE_EDIT)return;
   const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=ev=>{
@@ -1030,6 +1038,7 @@ document.getElementById("btnLinkSave").onclick=()=>{
 
 // ============ Заметки ============
 document.getElementById("btnAddNote").onclick=()=>{
+  if(!ENABLE_EDIT&&blockedEdit())return;
   document.getElementById("nDate").value=nowISO();
   document.getElementById("nText").value="";
   openModal("noteModal");
