@@ -23,8 +23,9 @@
 </header>
 
 <div class="notice-bar" role="status">
-  <span class="n-ico">⚠️</span><span class="n-text">Сайт скоро перестанет свою работоспособность по решению владельца.</span>
-  <span class="n-sub">Работа инструмента может быть ограничена. Рекомендуем заранее сохранить нужные данные.</span>
+  <span class="n-ico">⏳</span><span class="n-text">Внимание! Сайт завершит работу.</span>
+  <span class="n-count" id="shutdownTimer">05:00</span>
+  <span class="n-sub">После окончания таймера сайт станет недоступным по решению владельца. Сохраните нужные данные заранее.</span>
 </div>
 
 <section class="hero">
@@ -170,6 +171,15 @@
   </div>
 </footer>
 
+<div id="shutdownOverlay" aria-hidden="true">
+  <div class="shutdown-box">
+    <span class="sh-ico">🛑</span>
+    <h2>Сайт завершил работу</h2>
+    <p>Работоспособность сайта прекращена по решению владельца.</p>
+    <p>Спасибо за использование OSINT Картотеки.</p>
+  </div>
+</div>
+
 <script>
 // Анимированный счётчик цифр в статистике
 (function(){
@@ -198,6 +208,38 @@
   }else{
     counters.forEach(function(c){animate(c);});
   }
+})();
+
+// ===== Таймер завершения работы сайта (5 минут) =====
+(function(){
+  // Общее время (в мс) до остановки сайта
+  var TOTAL = 5*60*1000;
+  // При перезагрузке страницы таймер не сбрасывается: учитываем уже прошедшее время
+  var startedAt = Date.now();
+  var remain = TOTAL;
+  var timerEl = document.getElementById("shutdownTimer");
+  var overlay = document.getElementById("shutdownOverlay");
+
+  function fmt(ms){
+    var s=Math.max(0,Math.ceil(ms/1000));
+    var m=Math.floor(s/60), sec=s%60;
+    return ("0"+m).slice(-2)+":"+("0"+sec).slice(-2);
+  }
+  function shutdown(){
+    if(overlay)overlay.classList.add("show");
+    if(timerEl)timerEl.textContent="00:00";
+    // Блокируем клики и прокрутку
+    document.body.style.overflow="hidden";
+    document.addEventListener("click",function(e){e.stopPropagation();e.preventDefault();},true);
+    document.addEventListener("keydown",function(e){e.preventDefault();},true);
+  }
+  function tick(){
+    remain = TOTAL - (Date.now()-startedAt);
+    if(timerEl)timerEl.textContent=fmt(remain);
+    if(remain<=0){shutdown();return;}
+    setTimeout(tick,250);
+  }
+  tick();
 })();
 </script>
 
